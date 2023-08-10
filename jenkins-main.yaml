@@ -1,0 +1,30 @@
+---
+- name: Install Java (prerequisite for Jenkins)
+  apt:
+    name: openjdk-8-jdk
+    state: present
+  become: yes
+
+- name: Add Jenkins APT repository key
+  apt_key:
+    url: https://pkg.jenkins.io/debian/jenkins.io.key
+  become: yes
+
+- name: Add Jenkins APT repository
+  apt_repository:
+    repo: deb http://pkg.jenkins.io/debian-stable binary/
+    state: present
+  become: yes
+
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: present
+  become: yes
+
+- name: Start Jenkins service
+  systemd:
+    name: jenkins
+    enabled: yes
+    state: started
+  become: yes
